@@ -58,14 +58,15 @@ export default {
     handleLoginSubmit() {
       // console.log(this.form);
       //表单二次验证
-                  // validate方法是elementui给el-form表单提供验证的函数
-            // valid代表验证是否通过
+      // validate方法是elementui给el-form表单提供验证的函数
+      // valid代表验证是否通过
       this.$refs["form"].validate(value=>{
-        if(!value) return;
+        if(!value) return this.$message.error('必填项不能为空!请重新输入!');
         this.$store.dispatch("user/login",this.form).then(res=>{
           // console.log(res);
           if(res===true){
             this.$message.success('登录成功!返回上一个页面!')
+            this.$router.back()
           }
         })
       })

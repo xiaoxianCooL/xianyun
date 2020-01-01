@@ -1,12 +1,12 @@
 export const state = {
-  //采用了数据返回的结构
+  //采用了数据返回的结构 去保存返回的数据
   token: '',
   userInof: {}
 }
 
 //同步
 export const mutations = {
-  //第一个参数必须是state 第二个参数是传进来的值
+  //第一个参数必须是state 第二个参数是传进来的值 更像类似本地储存的数据库
   setUserInof(state, data) {
     state.userInof = data
   }
@@ -23,7 +23,7 @@ export const actions = {
     }).then(res => {
       // console.log(res)
       //登录成功 调用同步方法 更新state下的userInof的值
-      store.commit('setUserInof', res.data)
+      store.commit('setUserInof', res.data)//登录成功之后把返回的用户信息===本地存储
       //返回的这个值 用于判断作用 提示用户登录成功
       return true;
     })
