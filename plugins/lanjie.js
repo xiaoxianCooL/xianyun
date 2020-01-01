@@ -16,5 +16,4 @@ export default ({$axios})=>{
         }
     })
     // console.log(onError);
-    
 }

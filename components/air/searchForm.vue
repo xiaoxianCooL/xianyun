@@ -15,13 +15,14 @@
 
     <el-form class="search-form-content" ref="form" label-width="80px">
       <el-form-item label="出发城市">
-        <!-- fetch-suggestions 返回输入建议的方法 -->
+        <!-- fetch-suggestions 返回输入建议的方法 就是监听这个输入框的值 -->
         <!-- select 点击选中建议项时触发 -->
         <el-autocomplete
           :fetch-suggestions="queryDepartSearch"
           placeholder="请搜索出发城市"
           @select="handleDepartSelect"
           class="el-autocomplete"
+          v-model="form.departCity"
         ></el-autocomplete>
       </el-form-item>
       <el-form-item label="到达城市">
@@ -54,27 +55,65 @@ export default {
         { icon: "iconfont icondancheng", name: "单程" },
         { icon: "iconfont iconshuangxiang", name: "往返" }
       ],
-      currentTab: 0
+      currentTab: 0,
+      form: {
+        departCity: "",//出发城市名称
+        departCode:"",//出发城市的简写
+      },
+      chengshixiala: []
     };
   },
   methods: {
     // tab切换时触发
     handleSearchTab(item, index) {},
 
-    // 出发城市输入框获得焦点时触发
+    // 出发城市输入框获得焦点时触发(监听出发城市的输入框的值的变化 并处触发调函数)
     // value 是选中的值，cb是回调函数，接收要展示的列表
+    //cd回调函数中必须传入一个数组.里面必须是对象.并且对象里面一定要有value值.否则不会显示
     queryDepartSearch(value, cb) {
-      cb([{ value: 1 }, { value: 2 }, { value: 3 }]);
+      // console.log(this.form.departCity);
+      if (value.trim() === "") {
+        cb([]);
+        return;
+      }
+      //发送请求获取城市的实时机票列表
+      this.$axios({
+        url: "/airs/city",
+        params: {
+          name: value
+        }
+      }).then(res => {
+        console.log(res);
+        //结构出来返回的城市数据中的data下的data数组
+        const { data } = res.data;
+        //由于列表规定 数组中必须有对象,对象中必须有value值 所以
+        //循环数组 并给对象都加上一个没有'市'字的value值 并把他储存到实际渲染城市列表的空数组中
+        this.chengshixiala = data.map(obj => {
+          //再添加的时候 调用字符串替换方法 把市字替换为空
+          obj.value = obj.name.replace("市", "");
+          //并返回该对象
+          return obj;
+        });
+        cb(this.chengshixiala);
+      });
+      // console.log(value,cb)
+      // cb([{ value: 1 }, { value: 2 }, { value: 3 }]);
     },
 
     // 目标城市输入框获得焦点时触发
     // value 是选中的值，cb是回调函数，接收要展示的列表
     queryDestSearch(value, cb) {
-      cb([{ value: 1 }, { value: 2 }, { value: 3 }]);
+      //获焦时值为空 不触发下拉列表
+      if (value.trim() === "") return;
+      // cb([{ value: 1 }, { value: 2 }, { value: 3 }]);
     },
 
-    // 出发城市下拉选择时触发
-    handleDepartSelect(item) {},
+    // 出发城市下拉 选择时触发
+    handleDepartSelect(item) {
+      // console.log(item); 打印出的是当前城市的对象 把sort:CAN 城市代码保存起来 
+      //因为我们就是要凑齐5个参数发送请求
+      this.form.departCode=item.sort;
+    },
 
     // 目标城市下拉选择时触发
     handleDestSelect(item) {},
@@ -87,14 +126,14 @@ export default {
 
     // 提交表单是触发
     handleSubmit() {
-      $axios({
-        url:'/airs',
-        data
-      })
+      // $axios({
+      //   url:'/airs',
+      //   data
+      // })
     }
   },
   mounted() {
-    console.log(process)
+    // console.log(process)
   }
 };
 </script>
