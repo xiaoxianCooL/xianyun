@@ -10,7 +10,7 @@
         <FlightsListHead />
 
         <!-- 航班信息 -->
-        <FlightsItem/>
+        <FlightsItem v-for="(item,index) in ListB" :key="index" :data="item"/>
       </div>
 
       <!-- 侧边栏 -->
@@ -28,18 +28,31 @@ import FlightsItem from "@/components/air/flightsItem.vue";
 
 export default {
   data() {
-    return {};
+    return {
+      //航班的总数据
+      ListA:{},
+      //因为要遍历生成返回的机票列表数组 所以要定义一个数组接收 单独定义出来 是因为需要给数据分页
+      ListB:[]
+    };
   },
   components: {
     FlightsListHead,
     FlightsItem
   },
   mounted(){
-    console.log(this.$route.query);
+    // console.log(this.$route.query);
     
     this.$axios({
       url:"/airs",
       params:this.$route.query
+    }).then(res=>{
+      // console.log(res);
+
+      //因为接口一次性返回所有数据 我们用一个对象去接收他 再把数据渲染
+      this.ListA=res.data
+      //把返回的数据对象 中的数组储存到这个空数组中 循环遍历动态生成组件
+      this.ListB=this.ListA.flights
+            console.log(this.ListB);
     })
   }
 };
