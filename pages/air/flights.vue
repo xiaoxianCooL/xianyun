@@ -4,22 +4,22 @@
       <!-- 顶部过滤列表 -->
       <div class="flights-content">
         <!-- 过滤条件 -->
-        <div></div>
+        <FlightsFilters :data="huanCun" />
 
         <!-- 航班头部布局 -->
         <FlightsListHead />
 
         <!-- 航班信息 -->
-        <FlightsItem v-for="(item,index) in ListB" :key="index" :data="item"/>
+        <FlightsItem v-for="(item,index) in ListB" :key="index" :data="item" />
         <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="pageIndex"
-        :page-sizes="[5, 10, 15, 20]"
-        :page-size="pageSize"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="total">
-    </el-pagination>
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="pageIndex"
+          :page-sizes="[5, 10, 15, 20]"
+          :page-size="pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="total"
+        ></el-pagination>
       </div>
 
       <!-- 侧边栏 -->
@@ -34,62 +34,72 @@
 import moment from "moment";
 import FlightsListHead from "@/components/air/flightsListHead.vue";
 import FlightsItem from "@/components/air/flightsItem.vue";
-
+import FlightsFilters from "@/components/air/flightsFilters.vue";
 export default {
   data() {
     return {
       //航班的总数据
-      ListA:{
+      ListA: {
+        //初始化数据 传值给子组件
         info: {},
         options: {},
-        flights:[]
+        flights: []
+      },
+      //缓存总航班的数据 即使总航班数据被过滤修改后 也不影响总数据
+      huanCun:{
+        info:{},
+        options:{}
       },
       //因为要遍历生成返回的机票列表数组 所以要定义一个数组接收 单独定义出来 是因为需要给数据分页
       // ListB:[],
-      pageIndex:1,//页
-      pageSize:5,  //显示条数
-      total:0
+      pageIndex: 1, //页
+      pageSize: 5, //显示条数
+      total: 0
     };
   },
   components: {
     FlightsListHead,
-    FlightsItem
+    FlightsItem,
+    FlightsFilters
   },
-  mounted(){
+  mounted() {
     // console.log(this.$route.query);
-    
+
     this.$axios({
-      url:"/airs",
-      params:this.$route.query
-    }).then(res=>{
+      url: "/airs",
+      params: this.$route.query
+    }).then(res => {
       // console.log(res);
       //因为接口一次性返回所有数据 我们用一个对象去接收他 再把数据渲染
-      this.ListA=res.data
+      this.ListA = res.data;
       //把返回的数据对象 中的数组储存到这个空数组中 循环遍历动态生成组件
       // this.ListB=this.ListA.flights
-      // console.log(this.ListB);
-      this.total=this.ListA.total
-      // console.log(this.ListA.total);
-    })
+      // 把总航班数据赋值给缓存数据保存 因为res赋值给了可以被过滤的ListA对象 因为是直接的地址的赋值  所以res.data改变 或者 ListA对象改变都会影响缓存的数据 所以我们要新建一个对象来保存 而不是保存地址
+      this.huanCun = {...res.data}      //解构数据给空对象 而不是赋值地址 
+      this.total = this.ListA.total;
+      console.log(this.ListA);
+    });
   },
-  computed:{
+  computed: {
     //只要函数中引用的实例发生了变化 就会触发此函数
-    ListB(){
+    ListB() {
       // console.log(this.ListA.flights)
       //计算分页的数据 截取数据
-      return this.ListA.flights.slice( (this.pageIndex-1) * this.pageSize , this.pageIndex * this.pageSize)
+      return this.ListA.flights.slice(
+        (this.pageIndex - 1) * this.pageSize,
+        this.pageIndex * this.pageSize
+      );
     }
   },
-  methods:{
+  methods: {
     handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
-        this.pageSize=val
-
-      },
-      handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
-        this.pageIndex=val
-      }
+      // console.log(`每页 ${val} 条`);
+      this.pageSize = val;
+    },
+    handleCurrentChange(val) {
+      // console.log(`当前页: ${val}`);
+      this.pageIndex = val;
+    }
   }
 };
 </script>

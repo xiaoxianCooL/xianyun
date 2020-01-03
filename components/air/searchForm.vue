@@ -96,12 +96,12 @@ export default {
     // },
     // tab切换时触发
     handleSearchTab(item, index) {
-      console.log(item, index);
+      // console.log(item, index);
     },
 
     //当出发城市失去焦点时 默认选中第一个城市
     shijiaoA() {
-      console.log("被tab键触发了");
+      // console.log("被tab键触发了");
 
       //因为用户如果不输入 失去焦点的话 数组0项为 defined
       //defined不能通过打点调用任何属性和方法 否则报错
@@ -114,7 +114,7 @@ export default {
     },
     //当目标城市市区焦点时 默认选中第一个城市
     shijiaoB() {
-      console.log("被tab键触发了");
+      // console.log("被tab键触发了");
       if (this.chengshixialaB.length > 0) {
         this.form.destCity = this.chengshixialaB[0].value;
         this.form.destCode = this.chengshixialaB[0].sort;
