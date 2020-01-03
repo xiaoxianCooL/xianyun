@@ -1,6 +1,7 @@
 <template>
   <div class="flight-item">
-    <div>
+    <!-- 用户点击机票盒子的任何地方 弹出机票列表 -->
+    <div @click="ifshow = !ifshow">
       <!-- 显示的机票信息 -->
       <el-row type="flex" align="middle" class="flight-info">
         <el-col :span="6">
@@ -13,7 +14,7 @@
               <span>{{data.org_airport_name+data.org_airport_quay}}</span>
             </el-col>
             <el-col :span="8" class="flight-time">
-              <span>2时20分</span>
+              <span>{{jisuan}}</span>
             </el-col>
             <el-col :span="8" class="flight-airport">
               <strong>{{data.arr_time}}</strong>
@@ -27,9 +28,14 @@
         </el-col>
       </el-row>
     </div>
-    <div class="flight-recommend">
+    <div class="flight-recommend"  v-if="ifshow">
       <!-- 隐藏的座位信息列表 -->
-      <el-row type="flex" justify="space-between" align="middle">
+      <el-row 
+      type="flex" 
+      justify="space-between"
+      align="middle"
+      v-for="(item,index) in data.seat_infos" :key="index"
+      >
         <el-col :span="4">低价推荐</el-col>
         <el-col :span="20">
           <el-row type="flex" justify="space-between" align="middle" class="flight-sell">
@@ -58,8 +64,36 @@ export default {
       default: {}
     }
   },
-  mounted() {
-    console.log(this.data);
+  data(){
+    return{
+      //默认不显示!
+      ifshow:false
+    }
+  },
+  computed:{
+    //计算属性
+    jisuan(){
+      // 从对象中取出时间 字符串格式 22:50 20:30
+      const arrtime = this.data.arr_time;
+      const deptime = this.data.dep_time;
+      //分割字符串 返回一个数组
+      const arr = arrtime.split(':'); //['22','50']
+      const dep = deptime.split(':'); //['20','30']
+      // 转为分钟利于比较
+      let shi = arr[0] * 60 + +arr[1];
+      const fen = dep[0] * 60 + +dep[1];
+      //判断如果fen大于shi 则认为到了第二天
+      if(shi<fen){
+        shi += 24 * 60
+      }
+      // 根据转换来的分钟计算相隔时间
+      let xiangge = shi-fen
+      //转换回去
+      let H = Math.floor(xiangge / 60)
+      let M = xiangge % 60
+      //模板字符串写入
+      return `${H}时${M}分`
+    }
   }
 };
 </script>
