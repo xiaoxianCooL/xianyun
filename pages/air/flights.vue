@@ -4,7 +4,7 @@
       <!-- 顶部过滤列表 -->
       <div class="flights-content">
         <!-- 过滤条件 -->
-        <FlightsFilters :data="huanCun" />
+        <FlightsFilters :data="huanCun" @zitype="zitype" />
 
         <!-- 航班头部布局 -->
         <FlightsListHead />
@@ -86,12 +86,18 @@ export default {
       // console.log(this.ListA.flights)
       //计算分页的数据 截取数据
       return this.ListA.flights.slice(
-        (this.pageIndex - 1) * this.pageSize,
-        this.pageIndex * this.pageSize
+        (this.pageIndex - 1) * this.pageSize, //(1-1)X5 (2-1)X5
+        this.pageIndex * this.pageSize     //1X5   2X5
       );
     }
   },
   methods: {
+    //接收子组件穿过来的事件
+    zitype(arr){
+      console.log(arr);
+      this.ListA.flights = arr;
+      this.total = arr.length
+    },
     handleSizeChange(val) {
       // console.log(`每页 ${val} 条`);
       this.pageSize = val;
