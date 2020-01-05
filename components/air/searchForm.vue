@@ -97,6 +97,8 @@ export default {
     // tab切换时触发
     handleSearchTab(item, index) {
       // console.log(item, index);
+      //由于后台没有往返接口 提示用户
+      if(index===1) this.$message.error('功能还在开发中,敬请期待!');
     },
 
     //当出发城市失去焦点时 默认选中第一个城市

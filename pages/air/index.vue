@@ -39,7 +39,9 @@
     </h2>
 
     <!-- 特价机票 -->
-    <div class="air-sale"></div>
+    <div class="air-sale">
+      
+    </div>
   </section>
 </template>
 
