@@ -1,6 +1,6 @@
 export const state = {
   //采用了数据返回的结构 去保存返回的数据
-  token: '',
+  // token: '',
   userInof: {}
 }
 
@@ -26,6 +26,16 @@ export const actions = {
       store.commit('setUserInof', res.data)//登录成功之后把返回的用户信息===本地存储
       //返回的这个值 用于判断作用 提示用户登录成功
       return true;
+    })
+  },
+  //手机验证码
+  yanzhengma(store,data){
+    return this.$axios({
+      url:'/captchas',
+      method:'POST',
+      data:{
+        tel:data
+      }
     })
   }
 }

@@ -1,11 +1,11 @@
 <template>
   <div class="main">
     <div class="air-column">
-      <h2>剩机人</h2>
+      <h2>乘机人</h2>
       <el-form class="member-info">
-        <div class="member-info-item">
+        <div class="member-info-item" v-for="(item,index) in users" :key="index">
           <el-form-item label="乘机人类型">
-            <el-input placeholder="姓名" class="input-with-select">
+            <el-input placeholder="姓名" class="input-with-select" v-model="item.username">
               <el-select slot="prepend" value="1" placeholder="请选择">
                 <el-option label="成人" value="1"></el-option>
               </el-select>
@@ -13,14 +13,14 @@
           </el-form-item>
 
           <el-form-item label="证件类型">
-            <el-input placeholder="证件号码" class="input-with-select">
+            <el-input placeholder="证件号码" class="input-with-select" v-model="item.id">
               <el-select slot="prepend" value="1" placeholder="请选择">
                 <el-option label="身份证" value="1" :checked="true"></el-option>
               </el-select>
             </el-input>
           </el-form-item>
 
-          <span class="delete-user" @click="handleDeleteUser()">-</span>
+          <span class="delete-user" @click="handleDeleteUser(index)">-</span>
         </div>
       </el-form>
 
@@ -30,8 +30,8 @@
     <div class="air-column">
       <h2>保险</h2>
       <div>
-        <div class="insurance-item">
-          <el-checkbox label="航空意外险：￥30/份×1  最高赔付260万" border></el-checkbox>
+        <div class="insurance-item" v-for="(item,index) in data.insurances" :key="index">
+          <el-checkbox :label="`${item.type}：￥${item.price}/份×1  最高赔付${item.compensation}`" border @change="baoxianid(item.id)"></el-checkbox>
         </div>
       </div>
     </div>
@@ -41,11 +41,11 @@
       <div class="contact">
         <el-form label-width="60px">
           <el-form-item label="姓名">
-            <el-input></el-input>
+            <el-input v-model="contactName"></el-input>
           </el-form-item>
 
           <el-form-item label="手机">
-            <el-input placeholder="请输入内容">
+            <el-input placeholder="请输入内容" v-model="contactPhone">
               <template slot="append">
                 <el-button @click="handleSendCaptcha">发送验证码</el-button>
               </template>
@@ -53,7 +53,7 @@
           </el-form-item>
 
           <el-form-item label="验证码">
-            <el-input></el-input>
+            <el-input v-model="captcha"></el-input>
           </el-form-item>
         </el-form>
         <el-button type="warning" class="submit" @click="handleSubmit">提交订单</el-button>
@@ -64,18 +64,107 @@
 
 <script>
 export default {
+  //接收父组件传过来这个机票的数据
+  props:{
+    data:{
+      type:Object,
+      default(){ return {} }
+    }
+  },
+  data() {
+    return {
+      users: [
+        {
+          username: "",
+          id: ""
+        }
+      ],//用户列表
+      insurances:[],//保险id
+      contactName:"",//联系人名字
+      contactPhone:"", //联系人电话
+      captcha:"",//手机验证码
+      invoice:false,//是否需要发票
+      seat_xid:"",//座位id
+      air:0 //航班id
+    };
+  },
   methods: {
     // 添加乘机人
-    handleAddUsers() {},
+    handleAddUsers() {
+      this.users = [   //往数组里push也可以
+        ...this.users,
+        {
+          username: "",
+          id: ""
+        }
+      ];
+      // console.log(this.users)
+    },
 
     // 移除乘机人
-    handleDeleteUser() {},
+    handleDeleteUser(index) {
+      this.users.splice(index,1)
+    },
+
+    //保险id处理
+    baoxianid(id){
+      // console.log(id)
+      //获取保险id
+      //判断这个数组是否已经有这个id了
+     const index = this.insurances.indexOf(id)
+      if(index > -1){
+     //返回-1证明没有这个元素 大于-1证明存在这个元素 那就将这个元素删除 因为同一个保险不能买多份
+      this.insurances.splice(index,1)
+      }else{
+      //没有该元素点击就应该添加(id)
+      this.insurances.push(id)
+      }
+    },
 
     // 发送手机验证码
-    handleSendCaptcha() {},
+    handleSendCaptcha() {
+      //判断手机号码是否为空,为空不能发送验证码
+      if(!this.contactPhone) return this.$message.error('手机号码为空,请重新输入!');
+
+      this.$store.dispatch('user/yanzhengma',this.contactPhone).then(res=>{
+        this.$message.success('手机验证码发送成功:000000')
+      })
+    },
 
     // 提交订单
-    handleSubmit() {}
+    handleSubmit() {
+      const data = {
+        users:this.users,
+        insurances:this.insurances,
+        contactName:this.contactName,
+        contactPhone:this.contactPhone,
+        captcha:this.captcha,
+        invoice:this.invoice,
+        seat_xid:this.$route.query.seat_xid,
+        air:this.$route.query.id
+      }
+      // console.log(data)
+      //模拟提示用户 订单正在生成中
+      this.$message({
+        type:"success",
+        message:"正在生成订单请稍后!"
+      })
+      //参数凑齐  调取接口提交订单
+              // console.log(this.$store.state.user.token);
+      this.$axios({
+        url:'/airorders',
+        method:'POST',
+        data,
+        headers:{ 
+          Authorization: "Bearer " + this.$store.state.user.userInof.token
+        }
+      }).then(res=>{
+        // console.log(res);
+        this.$message.success(res.data.message)
+      })
+    }
+
+
   }
 };
 </script>
