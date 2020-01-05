@@ -8,7 +8,7 @@
     <!-- 搜索广告栏 -->
     <el-row type="flex" justify="space-between">
       <!-- 搜索表单 -->
-      <SearchForm/>
+      <SearchForm />
       <!-- <div>搜索</div> -->
 
       <!-- banner广告 -->
@@ -40,21 +40,47 @@
 
     <!-- 特价机票 -->
     <div class="air-sale">
-      
+      <el-row type="flex" class="air-sale-pic" justify="space-between">
+        <el-col :span="6" v-for="(item, index) in tejia" :key="index">
+          <nuxt-link
+            :to="`/air/flights?departCity=${item.departCity}&departCode=${item.departCode}&destCity=${item.destCity}&destCode=${item.destCode}&departDate=${item.departDate}`"
+          >
+            <img :src="item.cover" />
+            <el-row class="layer-bar" type="flex" justify="space-between">
+              <span>{{item.departCity}}-{{item.destCity}}</span>
+              <span>￥{{item.price | toFixed}}</span>
+            </el-row>
+          </nuxt-link>
+        </el-col>
+      </el-row>
     </div>
   </section>
 </template>
 
 <script>
-import SearchForm from '@/components/air/searchForm.vue'
+import SearchForm from "@/components/air/searchForm.vue";
 export default {
-  data () {
+  data() {
     return {
-      
-    }
+      tejia:[]
+    };
   },
-  components:{
+  components: {
     SearchForm
+  },
+  mounted(){
+    this.$axios({
+      url:'/airs/sale',
+    }).then(res=>{
+      // console.log(res)
+      const {data} =res.data;
+      this.tejia = data;
+    })
+  },
+  filters:{
+    toFixed(value){
+      return Number(value).toFixed(2);
+    }
   }
 };
 </script>
