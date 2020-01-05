@@ -44,7 +44,7 @@
             </el-col>
             <el-col :span="5" class="price">￥{{data.seat_infos[0].par_price}}</el-col>
             <el-col :span="3" class="choose-button">
-              <el-button type="warning" size="mini">选定</el-button>
+              <el-button type="warning" size="mini" @click="dindan(data.id,item.seat_xid)">选定</el-button>
               <p>剩余：{{data.seat_infos[0].discount}}</p>
             </el-col>
           </el-row>
@@ -93,6 +93,19 @@ export default {
       let M = xiangge % 60
       //模板字符串写入
       return `${H}时${M}分`
+    }
+  },
+  methods:{
+    dindan(id,seat_xid){
+      // console.log(123);
+      // console.log(this.data);
+      this.$router.push({
+        path:'/air/order',
+        query:{
+          id,
+          seat_xid
+        }
+      })
     }
   }
 };

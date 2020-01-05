@@ -238,7 +238,11 @@ export default {
         path: "/air/flights",
         query: this.form
       });
+          //点击搜索的同时 把5个参数储存到vuex中
+          	// this.$store.commit("air/setHistory", this.form);
+          this.$store.commit('air/setlishijilu', this.form)
     }
+
   },
   mounted() {
     // console.log(process)
