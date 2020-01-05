@@ -48,7 +48,8 @@ export default {
       //缓存总航班的数据 即使总航班数据被过滤修改后 也不影响总数据
       huanCun:{
         info:{},
-        options:{}
+        options:{},
+        flights: []
       },
       //因为要遍历生成返回的机票列表数组 所以要定义一个数组接收 单独定义出来 是因为需要给数据分页
       // ListB:[],
@@ -92,7 +93,7 @@ export default {
     }
   },
   methods: {
-    //接收子组件穿过来的事件
+    //接收子组件传过来的事件
     zitype(arr){
       console.log(arr);
       this.ListA.flights = arr;
