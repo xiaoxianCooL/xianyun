@@ -66,23 +66,15 @@ export default {
     FlightsFilters,
     FlightsAside
   },
+  watch:{
+    $route (){
+      this.huoqu()
+    }
+  },
   mounted() {
     // console.log(this.$route.query);
 
-    this.$axios({
-      url: "/airs",
-      params: this.$route.query
-    }).then(res => {
-      // console.log(res);
-      //因为接口一次性返回所有数据 我们用一个对象去接收他 再把数据渲染
-      this.ListA = res.data;
-      //把返回的数据对象 中的数组储存到这个空数组中 循环遍历动态生成组件
-      // this.ListB=this.ListA.flights
-      // 把总航班数据赋值给缓存数据保存 因为res赋值给了可以被过滤的ListA对象 因为是直接的地址的赋值  所以res.data改变 或者 ListA对象改变都会影响缓存的数据 所以我们要新建一个对象来保存 而不是保存地址
-      this.huanCun = { ...res.data }; //解构数据给空对象 而不是赋值地址
-      this.total = this.ListA.total;
-      console.log(this.ListA);
-    });
+  this.huoqu();
   },
   computed: {
     //只要函数中引用的实例发生了变化 就会触发此函数
@@ -99,6 +91,23 @@ export default {
     }
   },
   methods: {
+    //封装获取信息
+    huoqu(){
+          this.$axios({
+      url: "/airs",
+      params: this.$route.query
+    }).then(res => {
+      // console.log(res);
+      //因为接口一次性返回所有数据 我们用一个对象去接收他 再把数据渲染
+      this.ListA = res.data;
+      //把返回的数据对象 中的数组储存到这个空数组中 循环遍历动态生成组件
+      // this.ListB=this.ListA.flights
+      // 把总航班数据赋值给缓存数据保存 因为res赋值给了可以被过滤的ListA对象 因为是直接的地址的赋值  所以res.data改变 或者 ListA对象改变都会影响缓存的数据 所以我们要新建一个对象来保存 而不是保存地址
+      this.huanCun = { ...res.data }; //解构数据给空对象 而不是赋值地址
+      this.total = this.ListA.total;
+      console.log(this.ListA);
+    });
+    },
     //接收子组件传过来的事件
     zitype(arr) {
       // console.log(arr);

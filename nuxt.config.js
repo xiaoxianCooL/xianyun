@@ -37,7 +37,8 @@ export default {
   */
   plugins: [
     '@/plugins/element-ui',
-    '@/plugins/lanjie'
+    '@/plugins/lanjie',
+    { src: '@/plugins/localStorage.js', ssr: false }
   ],
 
   /*
