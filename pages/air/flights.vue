@@ -93,7 +93,7 @@ export default {
   methods: {
     //封装获取信息
     huoqu(){
-          this.$axios({
+      this.$axios({
       url: "/airs",
       params: this.$route.query
     }).then(res => {

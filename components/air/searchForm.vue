@@ -197,11 +197,19 @@ export default {
     },
 
     // 触发和目标城市切换时触发
-    handleReverse() {},
+    handleReverse() {
+      // console.log('点击测试');
+      //当用户点击换 城市名称调换
+      const {departCity,departCode,destCity,destCode} = this.form;
+      this.form.departCity=destCity;
+      this.form.departCode=destCode;
+      this.form.destCity=departCity;
+      this.form.destCode=departCode;
+    },
 
     // 提交表单是触发
     handleSubmit() {
-      // console.log(this.form);
+      console.log(this.form);
       //自定义验证规则 每一个属性 就是一个规则
       const rules = {
         departCity: {
