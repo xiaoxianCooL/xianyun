@@ -105,7 +105,7 @@ export default {
       // 把总航班数据赋值给缓存数据保存 因为res赋值给了可以被过滤的ListA对象 因为是直接的地址的赋值  所以res.data改变 或者 ListA对象改变都会影响缓存的数据 所以我们要新建一个对象来保存 而不是保存地址
       this.huanCun = { ...res.data }; //解构数据给空对象 而不是赋值地址
       this.total = this.ListA.total;
-      console.log(this.ListA);
+      // console.log(this.ListA);
     });
     },
     //接收子组件传过来的事件

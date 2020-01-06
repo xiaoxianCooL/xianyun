@@ -7,20 +7,27 @@
       </div>
 
       <!-- 侧边栏 -->
-      <div class="aside"></div>
+      <div class="aside">
+        <OrderAside :data="jipiaodata" />
+      </div>
     </el-row>
   </div>
 </template>
 
 <script>
 import OrderForm from "@/components/air/orderForm.vue"
+import OrderAside from "@/components/air/orderAside.vue"
 export default {
   components:{
-    OrderForm
+    OrderForm,
+    OrderAside
   },
   data () {
     return {
-      jipiaodata:{}
+      jipiaodata:{
+        // airport_tax_audlet:"",
+        seat_infos:{}
+      }
     }
   },
   mounted(){
@@ -34,8 +41,9 @@ export default {
         seat_xid
       }
     }).then(res=>{
-      console.log(res)
-      this.jipiaodata = res.data;
+      // console.log(res);
+      this.jipiaodata =res.data;
+      console.log(this.jipiaodata)
     })
   }
 };

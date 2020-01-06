@@ -31,7 +31,11 @@
       <h2>保险</h2>
       <div>
         <div class="insurance-item" v-for="(item,index) in data.insurances" :key="index">
-          <el-checkbox :label="`${item.type}：￥${item.price}/份×1  最高赔付${item.compensation}`" border @change="baoxianid(item.id)"></el-checkbox>
+          <el-checkbox
+            :label="`${item.type}：￥${item.price}/份×1  最高赔付${item.compensation}`"
+            border
+            @change="baoxianid(item.id)"
+          ></el-checkbox>
         </div>
       </div>
     </div>
@@ -58,17 +62,21 @@
         </el-form>
         <el-button type="warning" class="submit" @click="handleSubmit">提交订单</el-button>
       </div>
+      <!-- <div>{{data}}</div> -->
     </div>
+    <span>{{jine}}</span>
   </div>
 </template>
 
 <script>
 export default {
   //接收父组件传过来这个机票的数据
-  props:{
-    data:{
-      type:Object,
-      default(){ return {} }
+  props: {
+    data: {
+      type: Object,
+      default() {
+        return {};
+      }
     }
   },
   data() {
@@ -78,20 +86,22 @@ export default {
           username: "",
           id: ""
         }
-      ],//用户列表
-      insurances:[],//保险id
-      contactName:"",//联系人名字
-      contactPhone:"", //联系人电话
-      captcha:"",//手机验证码
-      invoice:false,//是否需要发票
-      seat_xid:"",//座位id
-      air:0 //航班id
-    };
+      ], //用户列表
+      insurances: [], //保险id
+      contactName: "", //联系人名字
+      contactPhone: "", //联系人电话
+      captcha: "", //手机验证码
+      invoice: false, //是否需要发票
+      seat_xid: "", //座位id
+      air: 0, //航班id
+    }
+
   },
   methods: {
     // 添加乘机人
     handleAddUsers() {
-      this.users = [   //往数组里push也可以
+      this.users = [
+        //往数组里push也可以
         ...this.users,
         {
           username: "",
@@ -103,69 +113,113 @@ export default {
 
     // 移除乘机人
     handleDeleteUser(index) {
-      this.users.splice(index,1)
+      this.users.splice(index, 1);
     },
 
     //保险id处理
-    baoxianid(id){
+    baoxianid(id) {
       // console.log(id)
       //获取保险id
       //判断这个数组是否已经有这个id了
-     const index = this.insurances.indexOf(id)
-      if(index > -1){
-     //返回-1证明没有这个元素 大于-1证明存在这个元素 那就将这个元素删除 因为同一个保险不能买多份
-      this.insurances.splice(index,1)
-      }else{
-      //没有该元素点击就应该添加(id)
-      this.insurances.push(id)
+      const index = this.insurances.indexOf(id);
+      if (index > -1) {
+        //返回-1证明没有这个元素 大于-1证明存在这个元素 那就将这个元素删除 因为同一个保险不能买多份
+        this.insurances.splice(index, 1);
+      } else {
+        //没有该元素点击就应该添加(id)
+        this.insurances.push(id);
       }
     },
 
     // 发送手机验证码
     handleSendCaptcha() {
       //判断手机号码是否为空,为空不能发送验证码
-      if(!this.contactPhone) return this.$message.error('手机号码为空,请重新输入!');
+      if (!this.contactPhone)
+        return this.$message.error("手机号码为空,请重新输入!");
 
-      this.$store.dispatch('user/yanzhengma',this.contactPhone).then(res=>{
-        this.$message.success('手机验证码发送成功:000000')
-      })
+      this.$store.dispatch("user/yanzhengma", this.contactPhone).then(res => {
+        this.$message.success("手机验证码发送成功:000000");
+      });
     },
 
     // 提交订单
     handleSubmit() {
+
+      
       const data = {
-        users:this.users,
-        insurances:this.insurances,
-        contactName:this.contactName,
-        contactPhone:this.contactPhone,
-        captcha:this.captcha,
-        invoice:this.invoice,
-        seat_xid:this.$route.query.seat_xid,
-        air:this.$route.query.id
-      }
+        users: this.users,
+        insurances: this.insurances,
+        contactName: this.contactName,
+        contactPhone: this.contactPhone,
+        captcha: this.captcha,
+        invoice: this.invoice,
+        seat_xid: this.$route.query.seat_xid,
+        air: this.$route.query.id
+      };
       // console.log(data)
       //模拟提示用户 订单正在生成中
       this.$message({
-        type:"success",
-        message:"正在生成订单请稍后!"
-      })
+        type: "success",
+        message: "正在生成订单请稍后!"
+      });
       //参数凑齐  调取接口提交订单
-              // console.log(this.$store.state.user.token);
+      // console.log(this.$store.state.user.token);
       this.$axios({
-        url:'/airorders',
-        method:'POST',
+        url: "/airorders",
+        method: "POST",
         data,
-        headers:{ 
+        headers: {
           Authorization: "Bearer " + this.$store.state.user.userInof.token
         }
-      }).then(res=>{
+      }).then(res => {
         // console.log(res);
-        this.$message.success(res.data.message)
-      })
+        this.$message.success(res.data.message);
+      });
+    },
+  },
+  // computed: {
+  //     // 计算过总价格 通过vuex 把数据传给子组件右侧栏显示
+  //     jine(){
+  //       let price = 0
+
+
+  //       if(!this.data.seat_infos.org_settle_price) return
+  //       // 机票价格
+  //       price += this.data.seat_infos.org_settle_price
+  //       // 机建＋燃油
+  //       price += this.data.airport_tax_audlet
+  //       // 保险
+  //       price += this.insurances.length * 30;
+  //       // 人数
+  //       price *= this.users.length
+  //       // 把数据放到vuex
+  //       this.$store.commit("air/setdingdanjine", price)
+
+
+  //       return price
+  //     }
+    
+  //计算订单金额 并传到vux给侧边栏读取渲染
+  computed:{
+    jine(){
+      if(!this.data.seat_infos.par_price) return;
+      //机票价格
+      let jiage = 0;
+      //乘机人 数量
+      let chengjiren = this.users.length;
+      //机票价格
+      jiage += this.data.seat_infos.par_price;
+      // 机建燃油费
+      jiage += this.data.airport_tax_audlet;
+      //保险
+      jiage += this.insurances.length*30
+      //+上乘机人人数
+      jiage *= chengjiren;
+      //储存到vuex中 让侧边栏读取渲染
+      this.$store.commit('air/setdingdanjine',jiage)
+      return ""
     }
-
-
-  }
+  },
 };
 </script>
 
