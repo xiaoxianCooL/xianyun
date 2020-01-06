@@ -174,31 +174,19 @@ export default {
       }).then(res => {
         // console.log(res);
         this.$message.success(res.data.message);
+        //解构res中的data中的data对象的订单id属性
+        const {data:{id}}=res.data;
+        this.$message.success("正在为您跳转付款页面,请稍后!")
+        //跳转页面 把订单id带过去
+        this.$router.push({
+          path:'/air/pay',
+          query:{
+            id
+          }
+        })
       });
     },
   },
-  // computed: {
-  //     // 计算过总价格 通过vuex 把数据传给子组件右侧栏显示
-  //     jine(){
-  //       let price = 0
-
-
-  //       if(!this.data.seat_infos.org_settle_price) return
-  //       // 机票价格
-  //       price += this.data.seat_infos.org_settle_price
-  //       // 机建＋燃油
-  //       price += this.data.airport_tax_audlet
-  //       // 保险
-  //       price += this.insurances.length * 30;
-  //       // 人数
-  //       price *= this.users.length
-  //       // 把数据放到vuex
-  //       this.$store.commit("air/setdingdanjine", price)
-
-
-  //       return price
-  //     }
-    
   //计算订单金额 并传到vux给侧边栏读取渲染
   computed:{
     jine(){
