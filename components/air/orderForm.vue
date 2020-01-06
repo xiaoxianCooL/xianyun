@@ -64,6 +64,7 @@
       </div>
       <!-- <div>{{data}}</div> -->
     </div>
+    <!-- 随便找个地方调用 返回的是空 不影响页面 -->
     <span>{{jine}}</span>
   </div>
 </template>

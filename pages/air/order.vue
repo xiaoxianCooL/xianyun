@@ -43,7 +43,7 @@ export default {
     }).then(res=>{
       // console.log(res);
       this.jipiaodata =res.data;
-      console.log(this.jipiaodata)
+      // console.log(this.jipiaodata)
     })
   }
 };

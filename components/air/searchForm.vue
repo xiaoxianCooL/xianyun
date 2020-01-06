@@ -211,7 +211,7 @@ export default {
 
     // 提交表单是触发
     handleSubmit() {
-      console.log(this.form);
+      // console.log(this.form);
       //自定义验证规则 每一个属性 就是一个规则
       const rules = {
         departCity: {

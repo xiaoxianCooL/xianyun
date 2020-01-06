@@ -77,16 +77,14 @@ export default {
   this.huoqu();
   },
   computed: {
-    //只要函数中引用的实例发生了变化 就会触发此函数
+    //只要函数中引用的实例发生了变化 就会触发此函数 (因为列表循环的是这个方法返回的被分页筛选的数组 所以只要数据变化就触发这个函数)
+    //通俗点解释就是 只要点击分页发生变化 就触发这个函数显示对应的分页的第几条~第几条数据 比如有97条数据 通过计算点击第一页就显示这97条数据的第0~5条数据,那么点击第二页的时候,不应该还是显示第0~5条  所以第二页应该显示的是第5~10条数据 如果点最后一页 比如应该显示的是第95~100条数据 但是因为数据只有97条.所以最后一页只显示了96,97 这2条数据
     ListB() {
-      // if (arr) {
-
-      // }
-      // console.log(this.ListA.flights)
-      //计算分页的数据 截取数据
+      //计算分页的数据 截取总数据长度 
+      //因为
       return this.ListA.flights.slice(
-        (this.pageIndex - 1) * this.pageSize, //(1-1)X5 (2-1)X5
-        this.pageIndex * this.pageSize //1X5   2X5
+        (this.pageIndex - 1) * this.pageSize, //当前如果是第一页(1-1)X5=0 如果是第二页(2-1)X5=5  类推
+        this.pageIndex * this.pageSize //当前第一页时 ~1X5=5   当前第二页时 ~2X5=10
       );
     }
   },
@@ -108,12 +106,12 @@ export default {
       // console.log(this.ListA);
     });
     },
-    //接收子组件传过来的事件
+    //接收子组件传过来的事件  只要筛选就会触发当前这个函数
     zitype(arr) {
-      // console.log(arr);
-      this.pageIndex = 1;  //输入用户选择筛选 应该从第一页开始浏览 而不是用户所在的当前页
-      this.ListA.flights = arr;
-      this.total = arr.length;
+      // console.log(arr);  //这个参数是子组件发射zitype这个事件并带回来的筛选后的arr数组
+      this.pageIndex = 1;  //用户如果选择筛选 应该从第一页开始浏览 而不是用户所在的当前页
+      this.ListA.flights = arr;//只要子组件发射回来筛选后的arr数据 父组件就应该立马更新当前列表并从第一页开始显示
+      this.total = arr.length; // 更新筛选后的总数据条数
     },
     handleSizeChange(val) {
       // console.log(`每页 ${val} 条`);
