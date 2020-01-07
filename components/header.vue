@@ -48,7 +48,17 @@ export default {
   methods: {
     // 用户退出
     handleLogout() {
-      console.log(this.$store);
+      // console.log(this.$store);
+      // this.$store.commit('user/setUserInof', {})
+      //清除掉vuex中的本地用户信息
+      const {commit} = this.$store;
+      commit('user/setUserInof',{});
+      //提示用户退出登录成功
+      // this.$message.success('退出登录成功!');
+      this.$message({
+        type:'success',
+        message:'退出登录成功!'
+      })
     }
     // aa(){
     //   console.log(this.$axios.defaults.baseURL+this.$store.state.user.userInof.user.defaultAvatar)

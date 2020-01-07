@@ -4,7 +4,7 @@ import {
 } from 'element-ui';
 // 这个回调函数一般返回一个nuxt顶级对象 只要在nuxt.config.js中引入 都可以在这个对象调用
 export default (nuxt) => {
-//   console.log(nuxt)
+  //console.log(nuxt)
   // console.log($axios);
   //axios它有一个文档没有说明的错误拦截方法.onError错误拦截方法
   //该方法返回一个结果res
