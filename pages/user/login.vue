@@ -24,7 +24,10 @@
 </template>
 
 <script>
-import LoginForm from "@/components/user/loginForm";
+//登录组件
+import LoginForm from "@/components/user/loginForm.vue";
+//注册组件
+import RegisterForm from "@/components/user/RegisterForm.vue";
 export default {
   data() {
     return {
@@ -32,7 +35,8 @@ export default {
     };
   },
   components: {
-    LoginForm
+    LoginForm,
+    RegisterForm
   },
   methods: {
     handleChangeTab(index) {
