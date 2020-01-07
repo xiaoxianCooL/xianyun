@@ -37,5 +37,21 @@ export const actions = {
         tel:data
       }
     })
+  },
+  //注册
+  zhuce(store,data){
+    return this.$axios({
+      url:'/accounts/register',
+      method:'POST',
+      data
+    }).then(res=>{
+      console.log(res)
+      //注册成功返回上一页
+      this.$router.back();
+      //调用同步方法把数据保存
+      this.commit('user/setUserInof',res.data)
+      //返回一个true 用于判断是否成功
+      return true
+    })
   }
 }
