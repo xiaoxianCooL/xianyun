@@ -132,6 +132,7 @@ export default {
   width: 300px;
   border: 1px solid #ccc;
   // background-color: red;
+  z-index: 999;
   .List_s_item {
     height: 40px;
     line-height: 40px;

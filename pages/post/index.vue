@@ -9,6 +9,7 @@
       </el-aside>
       <el-main>
         <!-- 内容部分搜索攻略组件 -->
+        <StrategyNeiron />
         <!-- 推荐攻略组件 -->
       </el-main>
     </el-container>
@@ -17,20 +18,25 @@
 
 <script>
 import StrategyCaidan from "@/components/post/strategyCaidan.vue"
+import StrategyNeiron from "@/components/post/strategyNeiron.vue"
   export default {
     data() {
       return {
       }
     },
     components:{
-      StrategyCaidan
+      StrategyCaidan,
+      StrategyNeiron
     }
   };
 </script>
 
-<style>
+<style lang="less" scoped>
 .contianer{
   width: 1000px;
   margin: 20px auto;
+}
+/deep/ .el-main {
+  padding: 0px 0px 0px 30px !important; 
 }
 </style>
