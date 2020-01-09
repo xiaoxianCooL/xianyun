@@ -55,7 +55,7 @@
         <el-col :span="8" class="haha4_item">
           <a href="#">
             <img
-              width="220em"
+              width="230em"
               height="150px"
               src="https://n3-q.mafengwo.net/s10/M00/E8/E4/wKgBZ1octoCABhgLAAafahORRLs91.jpeg?imageView2%2F2%2Fw%2F1360%2Fq%2F90"
               alt
@@ -65,7 +65,7 @@
         <el-col :span="8" class="haha4_item">
           <a href="#">
             <img
-              width="220em"
+              width="230em"
               height="150px"
               src="https://n3-q.mafengwo.net/s10/M00/E8/E4/wKgBZ1octoCABhgLAAafahORRLs91.jpeg?imageView2%2F2%2Fw%2F1360%2Fq%2F90"
               alt
@@ -75,7 +75,7 @@
         <el-col :span="8" class="haha4_item">
           <a href="#">
             <img
-              width="220em"
+              width="230em"
               height="150px"
               src="https://n3-q.mafengwo.net/s10/M00/E8/E4/wKgBZ1octoCABhgLAAafahORRLs91.jpeg?imageView2%2F2%2Fw%2F1360%2Fq%2F90"
               alt
@@ -88,7 +88,7 @@
         <el-col :span="22">
           <div class="fudon1">
             <i class="el-icon-location-outline"></i>
-            <span>北京市 </span>
+            <span>北京市</span>
             <span>&nbsp;&nbsp;by</span>
             <a href>
               <img
@@ -208,6 +208,10 @@ export default {};
   .tuijian-item {
     font-size: 12px;
     color: #666;
+    &:hover{
+      color: orange;
+      text-decoration: underline;
+    }
   }
 }
 .haha3 {
@@ -242,9 +246,10 @@ export default {};
 }
 .haha4 {
   overflow: hidden;
+      margin: 15px 0;
   .haha4_item {
     // flex: 0 0 80px;
-    margin-left: 29px;
+    margin-left: 15px;
   }
   .haha4_item:nth-child(1) {
     margin-left: 0px;
@@ -267,10 +272,12 @@ export default {};
     /*设置省略号在容器第3行文本后*/
     -webkit-line-clamp: 3;
     overflow: hidden;
+    margin-bottom: 15px;
   }
   .fudon1 {
     color: #666;
     font-size: 12px;
+    margin-bottom: 15px;
     &::after {
       clear: both;
       content: "";
@@ -309,11 +316,12 @@ export default {};
     }
   }
   .dianzan1 {
+    margin: 15px 0;
     color: orange;
   }
 }
 .wenzhang1 {
-  margin-top: 20px;
+  margin-top: 30px;
   border-bottom: 1px solid #ccc;
   .yonhu2 {
     // height: 30px;
@@ -366,7 +374,7 @@ export default {};
   }
   .yonhu3 {
     h3 {
-      margin: 15px 0;
+      margin: 5px 0px 15px 0px;
       font-weight: normal;
       a {
         display: -webkit-box;
