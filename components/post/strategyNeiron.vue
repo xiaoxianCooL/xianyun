@@ -34,7 +34,7 @@
       </el-col>
       <el-col :span="17" class="h2"></el-col>
       <el-col :span="4" class="h3">
-        <el-button type="primary" class="btn">
+        <el-button type="primary" class="btn" @click="$router.push({path:'/post/create'})">
           <i class="el-icon-edit"></i> 写游记
         </el-button>
       </el-col>
@@ -167,11 +167,14 @@
 </template>
 
 <script>
-export default {};
+export default {
+
+};
 </script>
 
 <style lang="less" scoped>
 .neiron {
+  z-index: 1;
   // min-width: 1000px;
   overflow: hidden;
   // margin-left: 20px;

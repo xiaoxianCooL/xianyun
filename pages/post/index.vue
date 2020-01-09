@@ -1,5 +1,5 @@
 <template>
-  <div class="contianer">
+  <div class="contianer1">
     <el-container>
       <el-aside width="250px">
         <!-- 侧边栏菜单组件 -->
@@ -32,7 +32,8 @@ import StrategyNeiron from "@/components/post/strategyNeiron.vue"
 </script>
 
 <style lang="less" scoped>
-.contianer{
+.contianer1{
+  position: relative;
   width: 1000px;
   margin: 20px auto;
 }
