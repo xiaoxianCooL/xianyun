@@ -16,7 +16,7 @@
     <el-row class="tuijian" :gutter="3">
       <el-col class="tuijian-item" :span="1">推荐:</el-col>
       <el-col class="tuijian-item" :span="1" v-for="(item,index) in morenchengshi" :key="index">
-        <a href="#" @click="tuijian_btn(item)">{{item}}</a>
+        <a href="JavaScript:void(0)" @click="tuijian_btn(item)">{{item}}</a>
       </el-col>
       <el-col class="tuijian-item" :span="20">
         <div class="grid-content bg-purple"></div>
@@ -37,25 +37,20 @@
 
     <div v-for="(item,index) in Lsit" :key="index">
       <!-- 结构一 -->
-      <div class="wenzhang" v-if="item.images.length===3">
+      <div class="wenzhang" v-if="item.images.length >=3">
         <!-- 标题 -->
         <h3>
           <a href="#">{{item.title}}</a>
         </h3>
         <!-- 文章内容 -->
         <p>
-          <a href="#" v-html="item.content"></a>
+          <a href="#">{{item.summary}}</a>
         </p>
         <!-- 图片 -->
         <el-row type="flex" class="row-bg haha4" justify="space-between">
           <el-col :span="8" class="haha4_item" v-for="(itemA,indexA) in item.images" :key="indexA">
             <a href="#">
-              <img
-                width="230em"
-                height="150px"
-                :src="`${itemA}`"
-                alt
-              />
+              <img width="230em" height="150px" :src="`${itemA}`" alt />
             </a>
           </el-col>
         </el-row>
@@ -86,17 +81,12 @@
       </div>
 
       <!-- 结构二 -->
-      <div class="wenzhang1" v-if="item.images.length===1">
+      <div class="wenzhang1" v-if="item.images.length<3">
         <el-row type="flex" class="row-bg haha4" justify="space-between">
           <!-- 图片 -->
-          <el-col :span="8" class="haha4_item" v-for="(itemA,indexA) in item.images" :key="indexA">
-            <a href="#">
-              <img
-                width="220em"
-                height="150px"
-                :src="`${itemA}`"
-                alt
-              />
+          <el-col :span="8" class="haha4_item imgborder">
+            <a href="#" style="width:230em;height:150px">
+              <img width="100%" height="100%" :src="`${item.images[0]}`" alt />
             </a>
           </el-col>
           <!-- ------------------- -->
@@ -108,7 +98,7 @@
                   <a href="#">{{item.title}}</a>
                 </h3>
                 <p>
-                  <a href="#" v-html="item.content"></a>
+                  <a href="#">{{item.summary}}</a>
                 </p>
               </el-col>
             </el-row>
@@ -140,7 +130,6 @@
         </el-row>
       </div>
     </div>
-
     <!-- 分页 -->
     <el-pagination
       @size-change="handleSizeChange"
@@ -178,6 +167,15 @@ export default {
       );
     }
   },
+  watch:{
+    '$route'(from,to){
+      console.log(from.query.city);
+      console.log(to.query.city);
+      this.city = from.query.city;
+      // console.log(this.city);
+      this.getdata()
+    }
+  },
   mounted() {
     this.$axios({
       url: "/posts"
@@ -189,41 +187,42 @@ export default {
     });
   },
   methods: {
+    //封装请求数据函数
+    getdata(){
+      this.$axios({
+        url:'/posts',
+        params:{
+          city:this.city
+        }
+      }).then(res=>{
+        // console.log(res);
+        const {data,total} = res.data;
+        this.shuju=data;
+        this.total=total;
+      })
+    },
     //推荐城市
     tuijian_btn(chengshi) {
       // console.log(this.city);
+      //有值的时候才发送请求 空不发送请求
       if (chengshi) this.city = chengshi;
       // console.log(this.city);
-
-      this.$axios({
-        url: "/posts",
-        params: {
-          city: this.city
-        }
-      }).then(res => {
-        // console.log(res);
-
-        const { data, total } = res.data;
-        this.shuju = data;
-        this.total = total;
-      });
+      this.getdata();
     },
     //搜索城市
     sousuo_btn() {
-      this.$axios({
-        url: "/posts",
-        params: {
-          city: this.city
-        }
-      }).then(res => {
-        console.log(res);
-        const { data, total } = res.data;
-        this.shuju = data;
-        this.total = total;
-      });
+     this.getdata()
     },
-    handleSizeChange() {},
-    handleCurrentChange() {}
+    //选择数据条数时
+    handleSizeChange(v) {
+      // console.log(v);
+      this.pageSize = v;
+    },
+    //选择页码时
+    handleCurrentChange(v) {
+      // console.log(v);
+      this.pageIndex = v;
+    }
   }
 };
 </script>
@@ -456,5 +455,10 @@ export default {
       overflow: hidden;
     }
   }
+}
+.imgborder {
+  display: inline-block;
+  border: 1px solid #ccc !important;
+  margin-right: 10px;
 }
 </style>

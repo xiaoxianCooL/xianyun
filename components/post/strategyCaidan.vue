@@ -6,7 +6,8 @@
         class="List"
         @mouseenter="enter(index)"
         @mouseleave="leave(index)"
-        v-for="(item,index) in chengshiliebiao" :key="index"
+        v-for="(item,index) in chengshiliebiao"
+        :key="index"
         :class="{haha3:id===index}"
       >
         <span>{{item.type}}</span>
@@ -26,8 +27,13 @@
     <!-- 二级菜单 -->
 
     <div class="List_s" v-show="anpai" @mouseenter="enter1" @mouseleave="leave1">
-      <div class="List_s_item" v-for="(item,index) in chengshicaidan" :key="index" :class="{haha4:id===index}" >
-        <a href="#">
+      <div
+        class="List_s_item"
+        v-for="(item,index) in chengshicaidan"
+        :key="index"
+        :class="{haha4:id===index}"
+      >
+        <a href="JavaScript:void(0)" @click="$router.push({path:'/post',query:{city:item.city}})">
           <i>{{index+1}}</i>
           <span class="span1">{{item.city}}</span>
           <span class="span2">{{item.desc}}</span>
@@ -46,6 +52,14 @@
 
 <script>
 export default {
+  props: {
+    data: {
+      type: Object,
+      default() {
+        return {};
+      }
+    }
+  },
   data() {
     return {
       anpai: false,
@@ -53,13 +67,13 @@ export default {
       chengshiliebiao: [],
       //城市列表二级菜单
       chengshicaidan: [],
-      id:999
+      id: 999
     };
   },
   methods: {
     enter(index) {
       this.anpai = true;
-      this.id=index;
+      this.id = index;
       //获取当前城市的二级菜单
       // if(this.chengshicaidan) return {};
       this.chengshicaidan = this.chengshiliebiao[index].children;
@@ -67,7 +81,7 @@ export default {
     },
     leave(index) {
       this.anpai = false;
-      this.id=999;
+      this.id = 999;
     },
     enter1() {
       this.anpai = true;
@@ -81,18 +95,7 @@ export default {
     this.$axios({
       url: "/posts/cities"
     }).then(res => {
-      console.log(res);
       this.chengshiliebiao = res.data.data;
-      console.log(this.chengshiliebiao);
-
-      // setTimeout(() => {
-      // res.data.data.forEach((item,index)=>{
-      // console.log(item[index]);
-      // this.chengshicaidan = item[index].children
-      // console.log(this.chengshicaidan);
-      // })
-      // }, 1);
-      // console.log(this.chengshicaidan);
     });
   }
 };
@@ -147,6 +150,7 @@ export default {
       border-left: 1px solid #ccc;
       a {
         text-decoration: none;
+
         i {
           color: #ffa500;
           font-size: 20px;
@@ -158,10 +162,16 @@ export default {
           color: #ffa500;
           padding-left: 8px;
           padding-right: 8px;
+          &:hover {
+            text-decoration: underline;
+          }
         }
         .span2 {
           font-size: 14px;
           color: #999;
+          &:hover {
+            text-decoration: underline;
+          }
         }
       }
     }
@@ -180,14 +190,14 @@ export default {
       padding-top: 10px;
     }
   }
-  .haha3{
+  .haha3 {
     color: orange;
     border-right: none !important;
-    i{
+    i {
       color: orange !important;
     }
   }
-  .haha4{
+  .haha4 {
     border-left: none !important;
   }
 }

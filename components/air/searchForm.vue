@@ -94,7 +94,7 @@ export default {
     // 	console.log(123);
 
     // },
-    // tab切换时触发
+    // tab切换菜单时触发
     handleSearchTab(item, index) {
       // console.log(item, index);
       //由于后台没有往返接口 提示用户
