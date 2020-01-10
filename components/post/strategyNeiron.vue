@@ -40,18 +40,18 @@
       <div class="wenzhang" v-if="item.images.length >=3">
         <!-- 标题 -->
         <h3>
-          <a href="#">{{item.title}}</a>
+          <router-link :to="{path:'/post/article', query: {id:item.id}}">{{item.title}}</router-link>
         </h3>
         <!-- 文章内容 -->
         <p>
-          <a href="#">{{item.summary}}</a>
+          <router-link :to="{path:'/post/article', query: {id:item.id}}">{{item.summary}}</router-link>
         </p>
         <!-- 图片 -->
         <el-row type="flex" class="row-bg haha4" justify="space-between">
           <el-col :span="8" class="haha4_item" v-for="(itemA,indexA) in item.images" :key="indexA">
-            <a href="#">
+            <router-link :to="{path:'/post/article', query: {id:item.id}}">
               <img width="230em" height="150px" :src="`${itemA}`" alt />
-            </a>
+            </router-link>
           </el-col>
         </el-row>
         <!-- 用户信息 -->
@@ -61,7 +61,7 @@
               <i class="el-icon-location-outline"></i>
               <span>{{item.cityName}}</span>
               <span>&nbsp;&nbsp;by</span>
-              <a href>
+              <router-link :to="{path:'/user/personal'}">
                 <img
                   width="16px"
                   height="16px"
@@ -69,7 +69,7 @@
                   alt
                 />
                 <span>{{item.account.nickname}}</span>
-              </a>
+              </router-link>
               <i class="el-icon-view"></i>
               <span>{{item.watch}}</span>
             </div>
@@ -85,9 +85,12 @@
         <el-row type="flex" class="row-bg haha4" justify="space-between">
           <!-- 图片 -->
           <el-col :span="8" class="haha4_item imgborder">
-            <a href="#" style="width:230em;height:150px">
+            <router-link
+              :to="{path:'/post/article', query: {id:item.id}}"
+              style="width:230em;height:150px"
+            >
               <img width="100%" height="100%" :src="`${item.images[0]}`" alt />
-            </a>
+            </router-link>
           </el-col>
           <!-- ------------------- -->
           <el-col :span="16">
@@ -95,10 +98,10 @@
             <el-row type="flex" class="row-bg yonhu3">
               <el-col :span="24">
                 <h3>
-                  <a href="#">{{item.title}}</a>
+                  <router-link :to="{path:'/post/article', query: {id:item.id}}">{{item.title}}</router-link>
                 </h3>
                 <p>
-                  <a href="#">{{item.summary}}</a>
+                  <router-link :to="{path:'/post/article', query: {id:item.id}}">{{item.summary}}</router-link>
                 </p>
               </el-col>
             </el-row>
@@ -109,7 +112,7 @@
                   <i class="el-icon-location-outline"></i>
                   <span>{{item.cityName}}</span>
                   <span>&nbsp;&nbsp;by</span>
-                  <a href>
+                  <router-link :to="{path:'/user/personal'}">
                     <img
                       width="16px"
                       height="16px"
@@ -117,7 +120,7 @@
                       alt
                     />
                     <span>{{item.account.nickname}}</span>
-                  </a>
+                  </router-link>
                   <i class="el-icon-view"></i>
                   <span>{{item.watch}}</span>
                 </div>
@@ -167,13 +170,13 @@ export default {
       );
     }
   },
-  watch:{
-    '$route'(from,to){
+  watch: {
+    $route(from, to) {
       console.log(from.query.city);
       console.log(to.query.city);
       this.city = from.query.city;
       // console.log(this.city);
-      this.getdata()
+      this.getdata();
     }
   },
   mounted() {
@@ -188,18 +191,18 @@ export default {
   },
   methods: {
     //封装请求数据函数
-    getdata(){
+    getdata() {
       this.$axios({
-        url:'/posts',
-        params:{
-          city:this.city
+        url: "/posts",
+        params: {
+          city: this.city
         }
-      }).then(res=>{
+      }).then(res => {
         // console.log(res);
-        const {data,total} = res.data;
-        this.shuju=data;
-        this.total=total;
-      })
+        const { data, total } = res.data;
+        this.shuju = data;
+        this.total = total;
+      });
     },
     //推荐城市
     tuijian_btn(chengshi) {
@@ -211,7 +214,7 @@ export default {
     },
     //搜索城市
     sousuo_btn() {
-     this.getdata()
+      this.getdata();
     },
     //选择数据条数时
     handleSizeChange(v) {
