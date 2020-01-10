@@ -45,7 +45,7 @@ export const actions = {
       method:'POST',
       data
     }).then(res=>{
-      console.log(res)
+      // console.log(res)
       //注册成功返回上一页
       this.$router.back();
       //调用同步方法把数据保存

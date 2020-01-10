@@ -1,33 +1,28 @@
 <template>
   <div class="neiron">
+    <!-- 搜索框 -->
     <el-row>
       <el-col :span="24">
         <div class="sousuo">
           &nbsp;
-          <input type="text" placeholder="请输入你要去的城市!" />
-          <span>
-            <i class="el-icon-search"></i>
-          </span>
+          <input type="text" placeholder="请输入你要去的城市!" v-model="city" />
+          <a href="JavaScript:void(0)">
+            <i class="el-icon-search" @click="sousuo_btn"></i>
+          </a>
         </div>
       </el-col>
     </el-row>
-
+    <!-- 推荐城市 -->
     <el-row class="tuijian" :gutter="3">
       <el-col class="tuijian-item" :span="1">推荐:</el-col>
-      <el-col class="tuijian-item" :span="1">
-        <a href="#">广州</a>
-      </el-col>
-      <el-col class="tuijian-item" :span="1">
-        <a href="#">上海</a>
-      </el-col>
-      <el-col class="tuijian-item" :span="1">
-        <a href="#">北京</a>
+      <el-col class="tuijian-item" :span="1" v-for="(item,index) in morenchengshi" :key="index">
+        <a href="#" @click="tuijian_btn(item)">{{item}}</a>
       </el-col>
       <el-col class="tuijian-item" :span="20">
         <div class="grid-content bg-purple"></div>
       </el-col>
     </el-row>
-
+    <!-- 写游记 -->
     <el-row type="flex" class="row-bg haha3" justify="space-between">
       <el-col :span="3" class="h1">
         <span class="gonlue">推荐攻略</span>
@@ -40,135 +35,196 @@
       </el-col>
     </el-row>
 
-    <!-- 结构一 -->
-    <div class="wenzhang">
-      <h3>
-        <a href="#">塞班贵？一定是你的打开方式不对！6000块玩转塞班</a>
-      </h3>
-      <p>
-        <a
-          href="#"
-        >大家对塞班岛总存在着这样的误解，知道它是美属地盘，就理所当然地觉得这里的花费一定很高，花费高有高的玩法，那如果只有6000块的预算呢？要怎么玩？关于旅行这件事，我们要让钱花得更有道理，收下这份攻略，带你6000块花式玩转塞班。</a>
-      </p>
-
-      <el-row type="flex" class="row-bg haha4" justify="space-between">
-        <el-col :span="8" class="haha4_item">
-          <a href="#">
-            <img
-              width="230em"
-              height="150px"
-              src="https://n3-q.mafengwo.net/s10/M00/E8/E4/wKgBZ1octoCABhgLAAafahORRLs91.jpeg?imageView2%2F2%2Fw%2F1360%2Fq%2F90"
-              alt
-            />
-          </a>
-        </el-col>
-        <el-col :span="8" class="haha4_item">
-          <a href="#">
-            <img
-              width="230em"
-              height="150px"
-              src="https://n3-q.mafengwo.net/s10/M00/E8/E4/wKgBZ1octoCABhgLAAafahORRLs91.jpeg?imageView2%2F2%2Fw%2F1360%2Fq%2F90"
-              alt
-            />
-          </a>
-        </el-col>
-        <el-col :span="8" class="haha4_item">
-          <a href="#">
-            <img
-              width="230em"
-              height="150px"
-              src="https://n3-q.mafengwo.net/s10/M00/E8/E4/wKgBZ1octoCABhgLAAafahORRLs91.jpeg?imageView2%2F2%2Fw%2F1360%2Fq%2F90"
-              alt
-            />
-          </a>
-        </el-col>
-      </el-row>
-
-      <el-row type="flex" class="row-bg yonhu" justify="space-between">
-        <el-col :span="22">
-          <div class="fudon1">
-            <i class="el-icon-location-outline"></i>
-            <span>北京市</span>
-            <span>&nbsp;&nbsp;by</span>
-            <a href>
+    <div v-for="(item,index) in Lsit" :key="index">
+      <!-- 结构一 -->
+      <div class="wenzhang" v-if="item.images.length===3">
+        <!-- 标题 -->
+        <h3>
+          <a href="#">{{item.title}}</a>
+        </h3>
+        <!-- 文章内容 -->
+        <p>
+          <a href="#" v-html="item.content"></a>
+        </p>
+        <!-- 图片 -->
+        <el-row type="flex" class="row-bg haha4" justify="space-between">
+          <el-col :span="8" class="haha4_item" v-for="(itemA,indexA) in item.images" :key="indexA">
+            <a href="#">
               <img
-                width="16px"
-                height="16px"
-                src="http://157.122.54.189:9095/assets/images/avatar.jpg"
+                width="230em"
+                height="150px"
+                :src="`${itemA}`"
                 alt
               />
-              <span>地球发动机</span>
             </a>
-            <i class="el-icon-view"></i>
-            <span>12959</span>
-          </div>
-        </el-col>
-        <el-col :span="1.5">
-          <span class="dianzan1">73赞</span>
-        </el-col>
-      </el-row>
+          </el-col>
+        </el-row>
+        <!-- 用户信息 -->
+        <el-row type="flex" class="row-bg yonhu" justify="space-between">
+          <el-col :span="22">
+            <div class="fudon1">
+              <i class="el-icon-location-outline"></i>
+              <span>{{item.cityName}}</span>
+              <span>&nbsp;&nbsp;by</span>
+              <a href>
+                <img
+                  width="16px"
+                  height="16px"
+                  :src="`${$axios.defaults.baseURL+item.account.defaultAvatar}`"
+                  alt
+                />
+                <span>{{item.account.nickname}}</span>
+              </a>
+              <i class="el-icon-view"></i>
+              <span>{{item.watch}}</span>
+            </div>
+          </el-col>
+          <el-col :span="1.5">
+            <span class="dianzan1">{{item.like}}赞</span>
+          </el-col>
+        </el-row>
+      </div>
+
+      <!-- 结构二 -->
+      <div class="wenzhang1" v-if="item.images.length===1">
+        <el-row type="flex" class="row-bg haha4" justify="space-between">
+          <!-- 图片 -->
+          <el-col :span="8" class="haha4_item" v-for="(itemA,indexA) in item.images" :key="indexA">
+            <a href="#">
+              <img
+                width="220em"
+                height="150px"
+                :src="`${itemA}`"
+                alt
+              />
+            </a>
+          </el-col>
+          <!-- ------------------- -->
+          <el-col :span="16">
+            <!-- 标题文章 -->
+            <el-row type="flex" class="row-bg yonhu3">
+              <el-col :span="24">
+                <h3>
+                  <a href="#">{{item.title}}</a>
+                </h3>
+                <p>
+                  <a href="#" v-html="item.content"></a>
+                </p>
+              </el-col>
+            </el-row>
+            <!-- 用户信息 -->
+            <el-row type="flex" class="row-bg yonhu2" justify="space-between">
+              <el-col :span="22">
+                <div class="fudon">
+                  <i class="el-icon-location-outline"></i>
+                  <span>{{item.cityName}}</span>
+                  <span>&nbsp;&nbsp;by</span>
+                  <a href>
+                    <img
+                      width="16px"
+                      height="16px"
+                      :src="`${$axios.defaults.baseURL+item.account.defaultAvatar}`"
+                      alt
+                    />
+                    <span>{{item.account.nickname}}</span>
+                  </a>
+                  <i class="el-icon-view"></i>
+                  <span>{{item.watch}}</span>
+                </div>
+              </el-col>
+              <el-col :span="1.5">
+                <span class="dianzan">{{item.like}}赞</span>
+              </el-col>
+            </el-row>
+          </el-col>
+        </el-row>
+      </div>
     </div>
 
-    <!-- 结构二 -->
-    <div class="wenzhang1">
-      <el-row type="flex" class="row-bg haha4" justify="space-between">
-        <el-col :span="8" class="haha4_item">
-          <a href="#">
-            <img
-              width="220em"
-              height="150px"
-              src="https://p3-q.mafengwo.net/s13/M00/41/C4/wKgEaVyaOs2AA9IKAAj8Lg2YzaU64.jpeg?imageMogr2%2Fthumbnail%2F1360x%2Fstrip%2Fquality%2F90"
-              alt
-            />
-          </a>
-        </el-col>
-
-        <el-col :span="16">
-          <el-row type="flex" class="row-bg yonhu3">
-            <el-col :span="24">
-              <h3>
-                <a href="#">远东行：用好奇心打量这座城 —— 最值得收藏的海参崴出行攻略</a>
-              </h3>
-              <p>
-                <a
-                  href="#"
-                >想象一下一个距离 北京 只有2.5小时飞行距离的城市：身处 亚洲 却能感受到十足的欧陆风情——欧式建筑和街道，金发碧眼的路人，正宗的西餐外加只有国内一半售价的帝王蟹可以敞开吃——更难能可贵的是，这里对国人（实质）免签，有直飞航班，低廉的物价，且尚未有太多的游客涉足还保留着原汁原味的传统风情！</a>
-              </p>
-            </el-col>
-          </el-row>
-
-          <el-row type="flex" class="row-bg yonhu2" justify="space-between">
-            <el-col :span="22">
-              <div class="fudon">
-                <i class="el-icon-location-outline"></i>
-                <span>北京市</span>
-                <span>&nbsp;&nbsp;by</span>
-                <a href>
-                  <img
-                    width="16px"
-                    height="16px"
-                    src="http://157.122.54.189:9095/assets/images/avatar.jpg"
-                    alt
-                  />
-                  <span>地球发动机</span>
-                </a>
-                <i class="el-icon-view"></i>
-                <span>12959</span>
-              </div>
-            </el-col>
-            <el-col :span="1.5">
-              <span class="dianzan">73赞</span>
-            </el-col>
-          </el-row>
-        </el-col>
-      </el-row>
-    </div>
+    <!-- 分页 -->
+    <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="pageIndex"
+      :page-sizes="[1, 2, 3, 4, 5]"
+      :page-size="pageSize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total"
+    ></el-pagination>
   </div>
 </template>
 
 <script>
 export default {
+  data() {
+    return {
+      //总数据
+      shuju: [],
+      //推荐城市
+      morenchengshi: ["广州", "上海", "北京"],
+      //城市名称
+      city: "",
+      pageIndex: 1,
+      pageSize: 3,
+      total: 0
+    };
+  },
+  computed: {
+    //计算页码
+    Lsit() {
+      return this.shuju.slice(
+        (this.pageIndex - 1) * this.pageSize,
+        this.pageIndex * this.pageSize
+      );
+    }
+  },
+  mounted() {
+    this.$axios({
+      url: "/posts"
+    }).then(res => {
+      // console.log(res);
+      const { data, total } = res.data;
+      this.shuju = data;
+      this.total = total;
+    });
+  },
+  methods: {
+    //推荐城市
+    tuijian_btn(chengshi) {
+      // console.log(this.city);
+      if (chengshi) this.city = chengshi;
+      // console.log(this.city);
 
+      this.$axios({
+        url: "/posts",
+        params: {
+          city: this.city
+        }
+      }).then(res => {
+        // console.log(res);
+
+        const { data, total } = res.data;
+        this.shuju = data;
+        this.total = total;
+      });
+    },
+    //搜索城市
+    sousuo_btn() {
+      this.$axios({
+        url: "/posts",
+        params: {
+          city: this.city
+        }
+      }).then(res => {
+        console.log(res);
+        const { data, total } = res.data;
+        this.shuju = data;
+        this.total = total;
+      });
+    },
+    handleSizeChange() {},
+    handleCurrentChange() {}
+  }
 };
 </script>
 
@@ -195,7 +251,7 @@ export default {
       border: none;
       outline: none;
     }
-    span {
+    a {
       i {
         line-height: 34px;
         font-size: 24px;
@@ -211,7 +267,7 @@ export default {
   .tuijian-item {
     font-size: 12px;
     color: #666;
-    &:hover{
+    &:hover {
       color: orange;
       text-decoration: underline;
     }
@@ -249,7 +305,7 @@ export default {
 }
 .haha4 {
   overflow: hidden;
-      margin: 15px 0;
+  margin: 15px 0;
   .haha4_item {
     // flex: 0 0 80px;
     margin-left: 15px;

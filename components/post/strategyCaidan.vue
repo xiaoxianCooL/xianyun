@@ -81,7 +81,7 @@ export default {
     this.$axios({
       url: "/posts/cities"
     }).then(res => {
-      // console.log(res);
+      console.log(res);
       this.chengshiliebiao = res.data.data;
       console.log(this.chengshiliebiao);
 
