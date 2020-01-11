@@ -139,7 +139,7 @@ export default {
         }
       }).then(res => {
         // console.log(res);
-        //结构出来返回的城市数据中的data下的data数组
+        //解构出来返回的城市数据中的data下的data数组
         const { data } = res.data;
         //由于列表规定 数组中必须有对象,对象中必须有value值 所以
         //循环数组 并给对象都加上一个没有'市'字的value值 并把他储存到实际渲染城市列表的空数组中
