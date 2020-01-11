@@ -1,15 +1,26 @@
 <template>
-  <div class="create">写游记页面</div>
+  <div class="create">
+    <el-container>
+      <el-aside width="750px">
+        <CreateWenbenyu/>
+      </el-aside>
+      <el-main width="200px">Main</el-main>
+    </el-container>
+  </div>
 </template>
 
 <script>
-export default {
+import CreateWenbenyu from "@/components/post/createWenbenyu.vue";
 
+export default {
+  components:{
+    CreateWenbenyu
+  }
 }
 </script>
 
 <style lang="less" scoped>
-.create{
+.create {
   width: 1000px;
   margin: 20px auto;
 }
