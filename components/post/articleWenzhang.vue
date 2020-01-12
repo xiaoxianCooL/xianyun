@@ -9,10 +9,12 @@
       </div>
       <div class="neiron" v-html="shuju.content"></div>
     </div>
+    <!-- <div class="ceshi"><i class="iconding:before"></i></div> -->
   </div>
 </template>
 
 <script>
+// import "../../assets/icont.css";
 export default {
   data() {
     return {
@@ -73,4 +75,12 @@ export default {
     }
   }
 }
+// .ceshi{
+//   width: 50px;
+//   height: 50px;
+//   i{
+//     color: red;
+//     font-size: 24px;
+//   }
+// }
 </style>

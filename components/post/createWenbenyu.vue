@@ -2,13 +2,17 @@
   <div>
     <h2>发表新攻略</h2>
     <p>分享你的个人游记，让更多人看到哦！</p>
+
     <el-form ref="form" :model="form">
+
       <el-form-item>
         <el-input v-model="form.title" placeholder="请输入标题" class="biaoti"></el-input>
       </el-form-item>
+
       <el-form-item>
         <VueEditor :config="config" ref="vueEditor" />
       </el-form-item>
+
       <el-form-item>
         <div class="xuanzechengshi">
           <span>请选择城市</span>
@@ -20,6 +24,7 @@
           ></el-autocomplete>
         </div>
       </el-form-item>
+
       <el-form-item>
         <div class="fabu">
           <el-button type="primary" class="btn" @click="fabubtn">发布</el-button>
@@ -29,6 +34,7 @@
           </span>
         </div>
       </el-form-item>
+
     </el-form>
   </div>
 </template>
@@ -68,7 +74,6 @@ export default {
       }
     };
   },
-  creared() {},
   mounted() {
     // 点击写游记的时候 立即获取全部城市列表
     this.$axios({
@@ -118,11 +123,9 @@ export default {
     // 监听输入建议时触发
     querySearchAsync(value, cb) {
       // console.log(123);
-      const arr = value
-        ? this.quanbuchengshi.filter(item => {
+      const arr = value ? this.quanbuchengshi.filter(item => {
             return item.value.indexOf(value) >= 0;
-          })
-        : this.quanbuchengshi;
+          }) : this.quanbuchengshi;
       // console.log(arr);
       cb(arr);
     },
@@ -144,15 +147,15 @@ export default {
       // 遍历对象 判断数据是否为空
       for (const key in this.form) {
         if (this.form[key].trim() === "") return this.$message.error("标题或城市不能为空!");
+        //已知BUG 文本域不输入内容 依然可以保存到草稿箱中 (已解决)
       }
-      //已知BUG 文本域不输入内容 依然可以保存到草稿箱中 (已解决)
       //判断富文本域是否有内容 没有内容不允许储存到草稿箱内
       if(this.$refs.vueEditor.editor.root.innerHTML!="" || this.$refs.vueEditor.editor.root.innerText!="") return this.$message.error("内容不能为空!");
       //把数据保存到vuex中
       this.$store.commit("post/setcaogao", data);
       this.$message.success("保存到草稿箱成功!");
     },
-    //被父组件触发的事件 接收父组件传过来的index 渲染对应数据到文本域
+    //被父组件触发的事件 接收父组件传过来的index 渲染对应数组中对应的数据对象到表单域
     vuexuanran(index) {
       this.$confirm("此操作原本内容将被草稿覆盖, 是否继续?", "请注意!", {
         confirmButtonText: "确定",

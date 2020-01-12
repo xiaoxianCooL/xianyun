@@ -13,6 +13,6 @@ export default {
 <style lang="less" scoped>
 .xiangguan{
   height: 1500px;
-  background: yellowgreen;
+  // background: yellowgreen;
 }
 </style>
