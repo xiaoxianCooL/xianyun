@@ -26,12 +26,13 @@
     </div>
     <!-- 二级菜单 -->
 
-    <div class="List_s" v-show="anpai" @mouseenter="enter1" @mouseleave="leave1">
+    <div class="List_s" v-show="anpai"  @mouseleave="leave1">
       <div
         class="List_s_item"
         v-for="(item,index) in chengshicaidan"
         :key="index"
         :class="{haha4:id===index}"
+        @mouseenter="enter1(index)"
       >
         <a href="JavaScript:void(0)" @click="$router.push({path:'/post',query:{city:item.city}})">
           <i>{{index+1}}</i>
@@ -82,12 +83,19 @@ export default {
     leave(index) {
       this.anpai = false;
       this.id = 999;
+      // console.log(index);
+      
     },
-    enter1() {
+    enter1(index) {
       this.anpai = true;
+      // this.id='';
+      this.id = index;
+      // console.log(index);
+      
     },
     leave1() {
       this.anpai = false;
+      this.id=999;
     }
   },
   mounted() {

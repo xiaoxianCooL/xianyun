@@ -30,7 +30,7 @@ export default {
   css: [
     'element-ui/lib/theme-chalk/index.css',
     'assets/main.css', // 新增自定义的页面过渡样式（文件来自3.4.1）
-    'assets/icont.css'
+    '@/assets/fonts/iconfont.css'//字体图标
   ],
 
   /*
@@ -40,6 +40,7 @@ export default {
     '@/plugins/element-ui',
     '@/plugins/lanjie',
     { src: '@/plugins/localStorage.js', ssr: false },
+    { src: '@/assets/fonts/iconfont.js', ssr: false }
     // '@/plugins/huabu'
   ],
 

@@ -38,7 +38,6 @@
     </el-form>
   </div>
 </template>
-
 <script>
 import moment from "moment";
 import VueEditor from "vue-word-editor";
@@ -115,6 +114,7 @@ export default {
         // for(let item in this.form){
         //   item='';
         // }
+        this.$refs.vueEditor.editor.root.innerHTML = "";
         this.form.title = "";
         this.form.content = "";
         this.form.city = "";
@@ -150,7 +150,9 @@ export default {
         //已知BUG 文本域不输入内容 依然可以保存到草稿箱中 (已解决)
       }
       //判断富文本域是否有内容 没有内容不允许储存到草稿箱内
-      if(this.$refs.vueEditor.editor.root.innerHTML!="" || this.$refs.vueEditor.editor.root.innerText!="") return this.$message.error("内容不能为空!");
+      // console.log(this.$refs.vueEditor.editor.root.innerHTML);
+      
+      if(this.$refs.vueEditor.editor.root.innerHTML==="<p><br></p>" || this.$refs.vueEditor.editor.root.innerText==="<p><br></p>") return this.$message.error("内容不能为空!");
       //把数据保存到vuex中
       this.$store.commit("post/setcaogao", data);
       this.$message.success("保存到草稿箱成功!");
